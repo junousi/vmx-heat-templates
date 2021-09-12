@@ -10,6 +10,8 @@ parameters:
   vcp_image: {description: Junos RE image, type: string}
   gateway_ip: {description: ip of gateway, type: string}
   stack_name: {description: Stack name, type: string}
+  re_index: {description: Index of re instance, type: number, default: 0}
+  re_pfe_network_ip1: {description: Unique IP in RE-PFE network, type: string, default: "128.0.0.4"}
 
 resources:
   re_fixed_net:
@@ -20,7 +22,7 @@ resources:
       ext_name: public_re
       int_name: internal_re
       internal_ip: 128.0.0.1
-      internal_ip1: 128.0.0.4
+      internal_ip1: {get_param: re_pfe_network_ip1}
       stack_name: {get_param: stack_name}
 
   re:
@@ -46,19 +48,20 @@ resources:
         vm_chassisname: {get_param: stack_name}
         vm_chassname: {get_param: stack_name}
         vm_i2cid: '0xBAA'
-        vm_instance: 0
+        vm_instance: {get_param: re_index}
         vm_is_virtual: 1
-        vm_ore_present: 0
+        vm_ore_present: {get_param: re_index}
         vm_retype: RE-VMX
         vmchtype: mx240
         vmtype: 0
         console: vidconsole
       name: 
         str_replace:
-          template: "Instance_%proj%-%ident%_re0"
+          template: "Instance_%proj%-%ident%_re%reindex%"
           params:
             '%proj%': {get_param: project_name}
             '%ident%': {get_param: stack_name}
+            '%reindex%': {get_param: re_index}
       networks:
       - port: {get_attr: [re_fixed_net, external_port]}
       - port: {get_attr: [re_fixed_net, internal_port]}
