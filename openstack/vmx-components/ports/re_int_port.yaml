@@ -16,12 +16,12 @@ resources:
       network: {get_param: vnetwork_id}
       allowed_address_pairs:
         # RT_IRS_V3 single chassis master
-        - 128.0.0.1
+        - ip_address: 128.0.0.1
         # RT_IRS_V3 single chassis backup
-        - 128.0.0.6
+        - ip_address: 128.0.0.6
       fixed_ips:
-        - ip_address: {get_param: ip_addr}
-        #- ip_address: {get_param: ip_addr1}
+        #- ip_address: {get_param: ip_addr}
+        - ip_address: {get_param: ip_addr1}
 
 outputs:
   port:
