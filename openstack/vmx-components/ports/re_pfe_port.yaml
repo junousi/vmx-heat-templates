@@ -15,6 +15,11 @@ resources:
       network: {get_param: vnetwork_id}
       fixed_ips:
         - ip_address: {get_param: ip_addr}
+      allowed_address_pairs:
+        - ip_address: '0.0.0.0/1'
+        - ip_address: '128.0.0.0/1'
+        - ip_address: '::/1'
+        - ip_address: '8000::/1'
 
 outputs:
   port:
